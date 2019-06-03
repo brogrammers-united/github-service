@@ -4,6 +4,8 @@ import org.bgu.model.json.GhRepositoryResponseDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.Objects;
+
 @JsonDeserialize(using=GhRepositoryResponseDeserializer.class)
 public class GhRepositoryResponse {
 
@@ -17,13 +19,18 @@ public class GhRepositoryResponse {
 
 	private final String sshCloneUrl;
 
-	public GhRepositoryResponse(String id, String name, String url, String cloneUrl, String sshCloneUrl) {
-		super();
+	private final boolean isPrivate;
+
+	private final String owner;
+
+	public GhRepositoryResponse(String id, String name, String url, String cloneUrl, String sshCloneUrl, boolean isPrivate, String owner) {
 		this.id = id;
 		this.name = name;
 		this.url = url;
 		this.cloneUrl = cloneUrl;
 		this.sshCloneUrl = sshCloneUrl;
+		this.isPrivate = isPrivate;
+		this.owner = owner;
 	}
 
 	public String getId() {
@@ -46,66 +53,30 @@ public class GhRepositoryResponse {
 		return sshCloneUrl;
 	}
 
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GhRepositoryResponse that = (GhRepositoryResponse) o;
+		return isPrivate == that.isPrivate &&
+				Objects.equals(id, that.id) &&
+				Objects.equals(name, that.name) &&
+				Objects.equals(url, that.url) &&
+				Objects.equals(cloneUrl, that.cloneUrl) &&
+				Objects.equals(sshCloneUrl, that.sshCloneUrl) &&
+				Objects.equals(owner, that.owner);
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cloneUrl == null) ? 0 : cloneUrl.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((sshCloneUrl == null) ? 0 : sshCloneUrl.hashCode());
-		result = prime * result + ((url == null) ? 0 : url.hashCode());
-		return result;
+		return Objects.hash(id, name, url, cloneUrl, sshCloneUrl, isPrivate, owner);
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GhRepositoryResponse other = (GhRepositoryResponse) obj;
-		if (cloneUrl == null) {
-			if (other.cloneUrl != null)
-				return false;
-		} else if (!cloneUrl.equals(other.cloneUrl))
-			return false;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (sshCloneUrl == null) {
-			if (other.sshCloneUrl != null)
-				return false;
-		} else if (!sshCloneUrl.equals(other.sshCloneUrl))
-			return false;
-		if (url == null) {
-			if (other.url != null)
-				return false;
-		} else if (!url.equals(other.url))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("GhRepositoryResponse [id=");
-		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", url=");
-		builder.append(url);
-		builder.append(", cloneUrl=");
-		builder.append(cloneUrl);
-		builder.append(", sshCloneUrl=");
-		builder.append(sshCloneUrl);
-		builder.append("]");
-		return builder.toString();
-	}
-
 }

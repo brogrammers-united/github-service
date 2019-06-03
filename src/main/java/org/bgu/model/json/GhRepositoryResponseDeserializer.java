@@ -1,6 +1,7 @@
 package org.bgu.model.json;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 import org.bgu.model.GhRepositoryResponse;
 
@@ -15,9 +16,9 @@ public class GhRepositoryResponseDeserializer extends StdDeserializer<GhReposito
 	private static final long serialVersionUID = 1L;
 
 	public GhRepositoryResponseDeserializer() {
-		this(null);
+		this(GhRepositoryResponse.class);
 	}
-	
+
 	public GhRepositoryResponseDeserializer(Class<?> vc) {
 		super(vc);
 	}
@@ -31,7 +32,9 @@ public class GhRepositoryResponseDeserializer extends StdDeserializer<GhReposito
 					node.get("name").asText(),
 					node.get("html_url").asText(),
 					node.get("clone_url").asText(),
-					node.get("ssh_url").asText()
+					node.get("ssh_url").asText(),
+					node.get("private").asBoolean(),
+					node.path("owner").get("login").asText()
 				);
 	}
 
